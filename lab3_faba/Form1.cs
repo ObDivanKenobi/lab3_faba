@@ -23,7 +23,7 @@ namespace lab3_faba
     {
         const int max_lights = 8;
         const int pixelsInCU = 50;
-        const int n = 10; //множитель числа полигонов в ярусе
+        const int n = 100; //множитель числа полигонов в ярусе
 
         List<float[]> lightColors = new List<float[]>();
         List<float[]> lightCoords = new List<float[]>();
@@ -97,7 +97,6 @@ namespace lab3_faba
 
             //установка проекции
             Gl.glOrtho(-50, 50, -50, 50, -50, 50);
-            //Glu.gluOrtho2D(0, openGlControl.Width, 0, openGlControl.Height);
 
             Gl.glMatrixMode(Gl.GL_MODELVIEW);
             Gl.glLoadIdentity();
@@ -106,6 +105,7 @@ namespace lab3_faba
             Gl.glEnable(Gl.GL_DEPTH_TEST);
             Gl.glEnable(Gl.GL_LIGHTING);
             Gl.glEnable(Gl.GL_NORMALIZE);
+            Gl.glEnable(Gl.GL_MULTISAMPLE);
 
             //инициализация начального источника света
             Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_POSITION, lightCoords[0]);
@@ -155,105 +155,137 @@ namespace lab3_faba
             // рисуем сферу с помощью библиотеки FreeGLUT 
             //Glut.glutSolidSphere(trackBarRadius.Value*5, 32, 32);
 
-            //изобретаем велосипед и рисуем сферу руками
-            List<Point3D> points = new List<Point3D>();
-            int radius = trackBarRadius.Value * 5;
-            int smoothness = radius * n;
-            double horangle = 0;                    
-            double verangle = Math.PI / smoothness;
-            points.Add(new Point3D(0, 0, radius));
-            for (int i = 1; i < smoothness; i++)
-            {
-                for (int j = 0; j < smoothness; j++)
-                {
-                    horangle = 2 * (j + 1) * Math.PI / smoothness; // увеличение горизонтального угла
-                    points.Add(new Point3D(
-                        radius * Math.Sin(verangle) * Math.Cos(horangle),
-                        radius * Math.Sin(verangle) * Math.Sin(horangle),
-                        radius * Math.Cos(verangle)));
-                }
-                verangle = (i + 1) * Math.PI / smoothness; // увеличение вертикального угла
-            }
-            points.Add(new Point3D(0, 0, -radius));
+            #region жуть кошмарная
+            ////изобретаем велосипед и рисуем сферу руками
+            //List<Point3D> points = new List<Point3D>();
+            //int radius = trackBarRadius.Value * 5;
+            //int smoothness = radius * n;
+            //double horangle = 0;
+            //double verangle = Math.PI / smoothness;
+            //points.Add(new Point3D(0, 0, radius));
+            //for (int i = 1; i < smoothness; i++)
+            //{
+            //    for (int j = 0; j < smoothness; j++)
+            //    {
+            //        horangle = 2 * (j + 1) * Math.PI / smoothness; // увеличение горизонтального угла
+            //        points.Add(new Point3D(
+            //            radius * Math.Sin(verangle) * Math.Cos(horangle),
+            //            radius * Math.Sin(verangle) * Math.Sin(horangle),
+            //            radius * Math.Cos(verangle)));
+            //    }
+            //    verangle = (i + 1) * Math.PI / smoothness; // увеличение вертикального угла
+            //}
+            //points.Add(new Point3D(0, 0, -radius));
 
-            for(int i = 0; i < points.Count; ++i)
+            //for (int i = 0; i < points.Count; ++i)
+            //{
+            //    //последний полигон в ярусе
+            //    if (i == smoothness - 1)
+            //    {
+            //        Gl.glBegin(Gl.GL_QUADS);
+            //        Gl.glNormal3d(points[0].X, points[0].Y, points[0].Z);
+            //        Gl.glVertex3d(points[0].X, points[0].Y, points[0].Z);
+            //        Gl.glNormal3d(points[1].X, points[1].Y, points[1].Z);
+            //        Gl.glVertex3d(points[1].X, points[1].Y, points[1].Z);
+            //        Gl.glNormal3d(points[smoothness].X, points[smoothness].Y, points[smoothness].Z);
+            //        Gl.glVertex3d(points[smoothness].X, points[smoothness].Y, points[smoothness].Z);
+            //        Gl.glNormal3d(points[0].X, points[0].Y, points[0].Z);
+            //        Gl.glVertex3d(points[0].X, points[0].Y, points[0].Z);
+            //        Gl.glEnd();
+            //    }
+            //    else if (i < smoothness)
+            //    {
+            //        Gl.glBegin(Gl.GL_QUADS);
+            //        Gl.glNormal3d(points[0].X, points[0].Y, points[0].Z);
+            //        Gl.glVertex3d(points[0].X, points[0].Y, points[0].Z);
+            //        Gl.glNormal3d(points[i + 2].X, points[i + 2].Y, points[i + 2].Z);
+            //        Gl.glVertex3d(points[i + 2].X, points[i + 2].Y, points[i + 2].Z);
+            //        Gl.glNormal3d(points[i + 1].X, points[i + 1].Y, points[i + 1].Z);
+            //        Gl.glVertex3d(points[i + 1].X, points[i + 1].Y, points[i + 1].Z);
+            //        Gl.glNormal3d(points[0].X, points[0].Y, points[0].Z);
+            //        Gl.glVertex3d(points[0].X, points[0].Y, points[0].Z);
+            //        Gl.glEnd();
+            //    }
+            //    else if (i == smoothness * smoothness - smoothness)
+            //    {
+            //        Gl.glBegin(Gl.GL_TRIANGLES);
+            //        Gl.glNormal3d(points[smoothness * smoothness - smoothness].X, points[smoothness * smoothness - smoothness].Y, points[smoothness * smoothness - smoothness].Z);
+            //        Gl.glVertex3d(points[smoothness * smoothness - smoothness].X, points[smoothness * smoothness - smoothness].Y, points[smoothness * smoothness - smoothness].Z);
+            //        Gl.glNormal3d(points[smoothness * smoothness - 2 * smoothness + 1].X, points[smoothness * smoothness - 2 * smoothness + 1].Y, points[smoothness * smoothness - 2 * smoothness + 1].Z);
+            //        Gl.glVertex3d(points[smoothness * smoothness - 2 * smoothness + 1].X, points[smoothness * smoothness - 2 * smoothness + 1].Y, points[smoothness * smoothness - 2 * smoothness + 1].Z);
+            //        Gl.glNormal3d(points[smoothness * smoothness - smoothness + 1].X, points[smoothness * smoothness - smoothness + 1].Y, points[smoothness * smoothness - smoothness + 1].Z);
+            //        Gl.glVertex3d(points[smoothness * smoothness - smoothness + 1].X, points[smoothness * smoothness - smoothness + 1].Y, points[smoothness * smoothness - smoothness + 1].Z);
+            //        Gl.glEnd();
+            //    }
+            //    else if (i >= (smoothness - 1) * smoothness)
+            //    {
+            //        Gl.glBegin(Gl.GL_TRIANGLES);
+            //        Gl.glNormal3d(points[i - smoothness].X, points[i - smoothness].Y, points[i - smoothness].Z);
+            //        Gl.glVertex3d(points[i - smoothness].X, points[i - smoothness].Y, points[i - smoothness].Z);
+            //        Gl.glNormal3d(points[i - smoothness + 1].X, points[i - smoothness + 1].Y, points[i - smoothness + 1].Z);
+            //        Gl.glVertex3d(points[i - smoothness + 1].X, points[i - smoothness + 1].Y, points[i - smoothness + 1].Z);
+            //        Gl.glNormal3d(points[smoothness * smoothness - smoothness + 1].X, points[smoothness * smoothness - smoothness + 1].Y, points[smoothness * smoothness - smoothness + 1].Z);
+            //        Gl.glVertex3d(points[smoothness * smoothness - smoothness + 1].X, points[smoothness * smoothness - smoothness + 1].Y, points[smoothness * smoothness - smoothness + 1].Z);
+            //        Gl.glEnd();
+            //    }
+            //    else if (i % smoothness == 0)
+            //    {
+            //        Gl.glBegin(Gl.GL_QUADS);
+            //        Gl.glNormal3d(points[i].X, points[i].Y, points[i].Z);
+            //        Gl.glVertex3d(points[i].X, points[i].Y, points[i].Z);
+            //        Gl.glNormal3d(points[i - smoothness + 1].X, points[i - smoothness + 1].Y, points[i - smoothness + 1].Z);
+            //        Gl.glVertex3d(points[i - smoothness + 1].X, points[i - smoothness + 1].Y, points[i - smoothness + 1].Z);
+            //        Gl.glNormal3d(points[i + 1].X, points[i + 1].Y, points[i + 1].Z);
+            //        Gl.glVertex3d(points[i + 1].X, points[i + 1].Y, points[i + 1].Z);
+            //        Gl.glNormal3d(points[i + smoothness].X, points[i + smoothness].Y, points[i + smoothness].Z);
+            //        Gl.glVertex3d(points[i + smoothness].X, points[i + smoothness].Y, points[i + smoothness].Z);
+            //        Gl.glEnd();
+            //    }
+            //    else
+            //    {
+            //        Gl.glBegin(Gl.GL_QUADS);
+            //        Gl.glNormal3d(points[i - smoothness].X, points[i - smoothness].Y, points[i - smoothness].Z);
+            //        Gl.glVertex3d(points[i - smoothness].X, points[i - smoothness].Y, points[i - smoothness].Z);
+            //        Gl.glNormal3d(points[i - smoothness + 1].X, points[i - smoothness + 1].Y, points[i - smoothness + 1].Z);
+            //        Gl.glVertex3d(points[i - smoothness + 1].X, points[i - smoothness + 1].Y, points[i - smoothness + 1].Z);
+            //        Gl.glNormal3d(points[i + 1].X, points[i + 1].Y, points[i + 1].Z);
+            //        Gl.glVertex3d(points[i + 1].X, points[i + 1].Y, points[i + 1].Z);
+            //        Gl.glNormal3d(points[i].X, points[i].Y, points[i].Z);
+            //        Gl.glVertex3d(points[i].X, points[i].Y, points[i].Z);
+            //        Gl.glEnd();
+            //    }
+            //}
+            #endregion
+
+            double radius = trackBarRadius.Value * 5,
+                   y_mult = Math.PI / n,
+                   x_mult = 2.0 * y_mult;
+
+            //рисуем заполненный полигон, применяем это к лицевой стороне
+            Gl.glPolygonMode(Gl.GL_FRONT_AND_BACK, Gl.GL_FILL);
+            Gl.glBegin(Gl.GL_QUAD_STRIP);
+
+            for (double y_index = 0; y_index <= n; ++y_index)
             {
-                //последний полигон в ярусе
-                if (i == smoothness - 1)
+                double theta = y_index * y_mult;
+                for (double x_index = 0; x_index <= n; ++x_index)
                 {
-                    Gl.glBegin(Gl.GL_QUADS);
-                    Gl.glNormal3d(points[0].X, 0, points[0].Z);
-                    Gl.glVertex3d(points[0].X, points[0].Y, points[0].Z);
-                    Gl.glNormal3d(points[1].X, 0, points[1].Z);
-                    Gl.glVertex3d(points[1].X, points[1].Y, points[1].Z);
-                    Gl.glNormal3d(points[smoothness].X, 0, points[smoothness].Z);
-                    Gl.glVertex3d(points[smoothness].X, points[smoothness].Y, points[smoothness].Z);
-                    Gl.glNormal3d(points[0].X, 0, points[0].Z);
-                    Gl.glVertex3d(points[0].X, points[0].Y, points[0].Z);
-                    Gl.glEnd();
-                }
-                else if (i < smoothness)
-                {
-                    Gl.glBegin(Gl.GL_QUADS);
-                    Gl.glNormal3d(points[0].X, 0, points[0].Z);
-                    Gl.glVertex3d(points[0].X, points[0].Y, points[0].Z);
-                    Gl.glNormal3d(points[i + 2].X, 0, points[i + 2].Z);
-                    Gl.glVertex3d(points[i + 2].X, points[i + 2].Y, points[i + 2].Z);
-                    Gl.glNormal3d(points[i + 1].X, 0, points[i + 1].Z);
-                    Gl.glVertex3d(points[i + 1].X, points[i + 1].Y, points[i + 1].Z);
-                    Gl.glNormal3d(points[0].X, 0, points[0].Z);
-                    Gl.glVertex3d(points[0].X, points[0].Y, points[0].Z);
-                    Gl.glEnd();
-                }
-                else if (i == smoothness * smoothness - smoothness)
-                {
-                    Gl.glBegin(Gl.GL_TRIANGLES);
-                    Gl.glNormal3d(points[smoothness * smoothness - smoothness].X, 0, points[smoothness * smoothness - smoothness].Z);
-                    Gl.glVertex3d(points[smoothness * smoothness - smoothness].X, points[smoothness * smoothness - smoothness].Y, points[smoothness * smoothness - smoothness].Z);
-                    Gl.glNormal3d(points[smoothness * smoothness - 2 * smoothness + 1].X, 0, points[smoothness * smoothness - 2 * smoothness + 1].Z);
-                    Gl.glVertex3d(points[smoothness * smoothness - 2 * smoothness + 1].X, points[smoothness * smoothness - 2 * smoothness + 1].Y, points[smoothness * smoothness - 2 * smoothness + 1].Z);
-                    Gl.glNormal3d(points[smoothness * smoothness - smoothness + 1].X, 0, points[smoothness * smoothness - smoothness + 1].Z);
-                    Gl.glVertex3d(points[smoothness * smoothness - smoothness + 1].X, points[smoothness * smoothness - smoothness + 1].Y, points[smoothness * smoothness - smoothness + 1].Z);
-                    Gl.glEnd();
-                }
-                else if (i >= (smoothness - 1) * smoothness)
-                {
-                    Gl.glBegin(Gl.GL_TRIANGLES);
-                    Gl.glNormal3d(points[i - smoothness].X, 0, points[i - smoothness].Z);
-                    Gl.glVertex3d(points[i - smoothness].X, points[i - smoothness].Y, points[i - smoothness].Z);
-                    Gl.glNormal3d(points[i - smoothness + 1].X, 0, points[i - smoothness + 1].Z);
-                    Gl.glVertex3d(points[i - smoothness + 1].X, points[i - smoothness + 1].Y, points[i - smoothness + 1].Z);
-                    Gl.glNormal3d(points[smoothness * smoothness - smoothness + 1].X, 0, points[smoothness * smoothness - smoothness + 1].Z);
-                    Gl.glVertex3d(points[smoothness * smoothness - smoothness + 1].X, points[smoothness * smoothness - smoothness + 1].Y, points[smoothness * smoothness - smoothness + 1].Z);
-                    Gl.glEnd();
-                }
-                else if (i % smoothness == 0)
-                {
-                    Gl.glBegin(Gl.GL_QUADS);
-                    Gl.glNormal3d(points[i].X, 0, points[i].Z);
-                    Gl.glVertex3d(points[i].X, points[i].Y, points[i].Z);
-                    Gl.glNormal3d(points[i - smoothness + 1].X, 0, points[i - smoothness + 1].Z);
-                    Gl.glVertex3d(points[i - smoothness + 1].X, points[i - smoothness + 1].Y, points[i - smoothness + 1].Z);
-                    Gl.glNormal3d(points[i + 1].X, 0, points[i + 1].Z);
-                    Gl.glVertex3d(points[i + 1].X, points[i + 1].Y, points[i + 1].Z);
-                    Gl.glNormal3d(points[i + smoothness].X, 0, points[i + smoothness].Z);
-                    Gl.glVertex3d(points[i + smoothness].X, points[i + smoothness].Y, points[i + smoothness].Z);
-                    Gl.glEnd();
-                }
-                else
-                {
-                    Gl.glBegin(Gl.GL_QUADS);
-                    Gl.glNormal3d(points[i - smoothness].X, 0, points[i - smoothness].Z);
-                    Gl.glVertex3d(points[i - smoothness].X, points[i - smoothness].Y, points[i - smoothness].Z);
-                    Gl.glNormal3d(points[i - smoothness + 1].X, 0, points[i - smoothness + 1].Z);
-                    Gl.glVertex3d(points[i - smoothness + 1].X, points[i - smoothness + 1].Y, points[i - smoothness + 1].Z);
-                    Gl.glNormal3d(points[i + 1].X, 0, points[i + 1].Z);
-                    Gl.glVertex3d(points[i + 1].X, points[i + 1].Y, points[i + 1].Z);
-                    Gl.glNormal3d(points[i].X, 0, points[i].Z);
-                    Gl.glVertex3d(points[i].X, points[i].Y, points[i].Z);
-                    Gl.glEnd();
+                    double phi = x_index * x_mult,
+                           x = radius * Math.Sin(theta) * Math.Cos(phi),
+                           y = radius * Math.Sin(theta) * Math.Sin(phi),
+                           z = radius * Math.Cos(theta);
+                    Gl.glNormal3d(x, y, z);
+                    Gl.glVertex3d(x, y, z);
+                    double theta_new = theta + y_mult;
+
+                    x = radius * Math.Sin(theta_new) * Math.Cos(phi);
+                    y = radius * Math.Sin(theta_new) * Math.Sin(phi);
+                    z = radius * Math.Cos(theta_new);
+                    Gl.glNormal3d(x, y, z);
+                    Gl.glVertex3d(x, y, z);
                 }
             }
+            Gl.glEnd();
 
             Gl.glPopMatrix();
             Gl.glFlush();

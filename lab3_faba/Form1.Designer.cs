@@ -59,7 +59,7 @@
             this.openGlControl.DepthBits = ((byte)(16));
             this.openGlControl.Location = new System.Drawing.Point(12, 12);
             this.openGlControl.Name = "openGlControl";
-            this.openGlControl.Size = new System.Drawing.Size(464, 429);
+            this.openGlControl.Size = new System.Drawing.Size(464, 464);
             this.openGlControl.StencilBits = ((byte)(0));
             this.openGlControl.TabIndex = 0;
             // 
@@ -89,7 +89,7 @@
             // 
             this.trackBarPhi.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.trackBarPhi.Location = new System.Drawing.Point(12, 447);
+            this.trackBarPhi.Location = new System.Drawing.Point(12, 487);
             this.trackBarPhi.Maximum = 18;
             this.trackBarPhi.Minimum = -18;
             this.trackBarPhi.Name = "trackBarPhi";
@@ -107,7 +107,7 @@
             this.trackBarPsi.Minimum = -18;
             this.trackBarPsi.Name = "trackBarPsi";
             this.trackBarPsi.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trackBarPsi.Size = new System.Drawing.Size(45, 429);
+            this.trackBarPsi.Size = new System.Drawing.Size(45, 464);
             this.trackBarPsi.TabIndex = 9;
             this.trackBarPsi.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
             this.trackBarPsi.ValueChanged += new System.EventHandler(this.Draw);
@@ -124,7 +124,7 @@
             this.groupBox1.Controls.Add(this.trackBarRadius);
             this.groupBox1.Location = new System.Drawing.Point(533, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(251, 480);
+            this.groupBox1.Size = new System.Drawing.Size(251, 497);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Настройки";
@@ -132,7 +132,7 @@
             // buttonRemoveLight
             // 
             this.buttonRemoveLight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonRemoveLight.Location = new System.Drawing.Point(191, 353);
+            this.buttonRemoveLight.Location = new System.Drawing.Point(191, 370);
             this.buttonRemoveLight.Name = "buttonRemoveLight";
             this.buttonRemoveLight.Size = new System.Drawing.Size(50, 23);
             this.buttonRemoveLight.TabIndex = 11;
@@ -143,7 +143,7 @@
             // buttonAddLight
             // 
             this.buttonAddLight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonAddLight.Location = new System.Drawing.Point(9, 353);
+            this.buttonAddLight.Location = new System.Drawing.Point(9, 370);
             this.buttonAddLight.Name = "buttonAddLight";
             this.buttonAddLight.Size = new System.Drawing.Size(50, 23);
             this.buttonAddLight.TabIndex = 10;
@@ -158,7 +158,7 @@
             this.listBoxLights.FormattingEnabled = true;
             this.listBoxLights.Location = new System.Drawing.Point(9, 83);
             this.listBoxLights.Name = "listBoxLights";
-            this.listBoxLights.Size = new System.Drawing.Size(232, 264);
+            this.listBoxLights.Size = new System.Drawing.Size(232, 277);
             this.listBoxLights.TabIndex = 9;
             // 
             // label1
@@ -174,11 +174,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(786, 504);
+            this.ClientSize = new System.Drawing.Size(786, 521);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.trackBarPsi);
             this.Controls.Add(this.trackBarPhi);
             this.Controls.Add(this.openGlControl);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
             this.Text = "Lab3 faba";
             this.Load += new System.EventHandler(this.Form1_Load);
